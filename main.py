@@ -1,39 +1,61 @@
 import ast
 from Documentor import GoogleDocumentor,Documentor
-from typing import Optional, Iterable
+from typing import Optional, Iterable,List, Tuple
 with open('a.py', 'r') as file:
     file_content = file.read()
 
 parsed_ast = ast.parse(file_content)  # Parse the Python file into an AST
 
-def insert_doc_string(node: ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef, 
-                      indent:int,
-                      lines: Iterable[str], sep:str="\n"):
-    indented_lines = [""] + [("    "*(1+indent // 4)) + l for l in lines] + [""]
-    expr = ast.Expr(value =ast.Constant(sep.join(indented_lines)))
-    node.body.insert(0,expr)
+def insert_doc_string(indent:int,
+                      lines: Iterable[str], 
+                      sep:str="\n") -> List[str]:
+    
+    indented_lines = [("    "*(1+indent // 4)) + l for l in ["\"\"\""] + list(lines) + ["\"\"\""]]
+    return indented_lines
 
-def ast_doc_string_generator(python_file_path: str, 
+def ast_doc_string_generator(python_lines: str, 
                              doc: Documentor, 
-                             output_file: Optional[str] = None, 
-                             over_write_docstrings: bool=False):
-    with open(python_file_path, 'r') as file:
-        file_content = file.read()
-    tree = ast.parse(file_content)
+                             over_write_docstrings: bool=False) -> List[Tuple[int, List[str]]]:
+    tree = ast.parse(python_lines)
+    docstring_lineno: List[Tuple[int, List[str]]] = []
     for node in ast.walk(tree):
+                
         if isinstance(node, (ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef)) and not has_docstring(node) or over_write_docstrings:
             if isinstance(node, ast.ClassDef):
-                insert_doc_string(node,node.col_offset+1, doc.document_class(node))
+                docstring = insert_doc_string(node.col_offset+1, doc.document_class(node))
+                docstring_lineno.append((node.lineno, docstring))
             elif isinstance(node, ast.FunctionDef):
-                insert_doc_string(node, node.col_offset+1,doc.document_function(node))
+                docstring = insert_doc_string(node.col_offset+1,doc.document_function(node))
+                docstring_lineno.append((node.lineno, docstring))
             elif isinstance(node, ast.AsyncFunctionDef):
-                insert_doc_string(node, node.col_offset+1,doc.document_async_function(node))
+                docstring = insert_doc_string(node.col_offset+1,doc.document_async_function(node))
+                docstring_lineno.append((node.lineno, docstring))
 
-    updated_code = ast.unparse(tree)
-    if output_file == None:
-        output_file = python_file_path
-    with open(output_file, "w") as file:
-        file.write(updated_code)
+    return docstring_lineno
+
+def ast_doc_string_generator_keep_empty_spaces(python_lines: List[str], 
+                             doc: Documentor, 
+                             over_write_docstrings: bool=False) -> str:
+    line_groups: List[str] = []
+    i = 0
+    while i < len(python_lines): 
+        if python_lines[i].strip() == "":
+            line_groups.append(python_lines[i])
+            i += 1
+        else:
+            current_group:List[str] = []
+            while i < len(python_lines) and not python_lines[i].strip() == "":
+                current_group.append(python_lines[i])
+                i += 1
+            line_groups.append(ast_doc_string_generator("".join(current_group), doc, over_write_docstrings))
+    return "".join(line_groups)
+
+
+
+        
+
+    
+    
 
 def has_docstring(node: ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
     """Checks if the first statement in a class or function is a valid docstring."""
@@ -49,5 +71,13 @@ def has_docstring(node: ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef) -
     )
 
 if __name__ == "__main__":
-    ast_doc_string_generator("a.py", GoogleDocumentor(), "b.py")
+    with open("a.py","r") as f:
+        original_file = f.readlines()
+        new_file = ast_doc_string_generator("".join(original_file), GoogleDocumentor())
     
+    docstring_len_sum = 0
+    for lineno, docstring in new_file:
+        for ds in docstring[::-1]:
+            original_file.insert(lineno+docstring_len_sum, ds + "\n")
+        docstring_len_sum += len(docstring)
+    print("".join(original_file))

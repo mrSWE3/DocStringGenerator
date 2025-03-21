@@ -1,5 +1,13 @@
-from typing import Tuple, Callable
+class clas:
+    
+    def __init__(self):
+        self.i = 0
 
-class clas[t1, t2](object):
-    def func[*t3, **t4](self, arg1: Callable[[*t3], Tuple[bool,t1]], arg2:  Callable[t4, Tuple[bool,t2]]) -> str:
-        return ''
+
+
+
+        1+1
+
+
+
+

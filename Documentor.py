@@ -1,4 +1,4 @@
-from typing import Protocol, Iterable, List, Type
+from typing import Protocol, Iterable, List, Type, Set
 import ast
 
 class Documentor(Protocol):
@@ -23,6 +23,7 @@ def extract_from_function[T: ast.AST](func: ast.FunctionDef | ast.AsyncFunctionD
                 # Walk through the body of the target function
                 for stmt in node.body:
                     if isinstance(stmt, stmt_type):  # Look for raise statements
+                        stmt.lineno
                         raise_statements.append(stmt)  # Convert to source code
     return raise_statements
                         
@@ -35,12 +36,14 @@ def add_section(header:str, current_lines: List[str], new_lines: List[str]):
 class FillInDocumentor(Documentor, Protocol):
     def document_class(self, class_def: ast.ClassDef) -> Iterable[str]:
         lines: List[str] = []
+        add_section("# Summary", lines, [""])
         add_section("# Decorators", lines, self.document_decorators(class_def.decorator_list))
         add_section("# Type Params", lines, self.document_type_params(class_def.type_params))
         add_section("# Key Words", lines, self.document_key_words(class_def.keywords))
         return lines
     def document_function(self, func_def: ast.FunctionDef) -> Iterable[str]:
         lines: List[str] = []
+        add_section("# Summary", lines, [""])
         add_section("# Type params", lines, self.document_type_params(func_def.type_params))
         add_section("# Args", lines, self.document_args(func_def.args))
         add_section("# Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
@@ -49,6 +52,7 @@ class FillInDocumentor(Documentor, Protocol):
         return lines
     def document_async_function(self, func_def: ast.AsyncFunctionDef) -> Iterable[str]:
         lines: List[str] = []
+        add_section("# Summary", lines, [""])
         add_section("# Type params", lines, self.document_type_params(func_def.type_params))
         add_section("# Args", lines, self.document_args(func_def.args))
         add_section("# Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
@@ -102,18 +106,18 @@ class GoogleDocumentor(FillInDocumentor):
         return lines
 
     def document_args(self, args: ast.arguments)->List[str]:
-        return [f"{arg.arg}{"" if arg.annotation == None else f" ({ast.unparse(arg.annotation)})"}: " for arg in args.args + 
+        return [f"{arg.arg}{"" if arg.annotation == None else f" ({ast.unparse(arg.annotation)})"}: " for i,arg in enumerate(args.args + 
                 [vararg for vararg in [args.vararg] if vararg != None]+
-                [kwarg for kwarg in [args.kwarg] if kwarg != None]]
+                [kwarg for kwarg in [args.kwarg] if kwarg != None]) if i!=0 or arg.arg != "self"]
             
     def document_raises(self, raises: List[ast.Raise])->List[str]:
-        lines: List[str] = []
+        lines: Set[str] = set()
         for raise_stmt in raises:
-            if isinstance(raise_stmt.exc, ast.Name):
-                lines.append(f"{raise_stmt.exc.id}: ")
+            if isinstance(raise_stmt.exc, ast.Call) and isinstance(raise_stmt.exc.func, ast.Name):
+                lines.add(f"{raise_stmt.exc.func.id}")
             else:
-                lines.append(f"Unsolved raise {ast.unparse(raise_stmt.exc) if raise_stmt.exc != None else None}: ")
-        return lines
+                lines.add(str(ast.unparse(raise_stmt.exc) if raise_stmt.exc != None else None))
+        return list(lines)
     def document_yields(self, returns_type: ast.expr | None)->List[str]:
         lines: List[str] = []
         if isinstance(returns_type, ast.Subscript
@@ -129,8 +133,8 @@ class GoogleDocumentor(FillInDocumentor):
 
             
     def document_returns(self, returns_type: ast.expr | None)->List[str]:
-        if returns_type != None:
+        if returns_type != None and ast.unparse(returns_type) != "None":
             return [f"{ast.unparse(returns_type)}"]
-        return ["No return type"]
+        return []
 
 
