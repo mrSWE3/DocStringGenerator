@@ -6,20 +6,20 @@ A Python docstring template generator with type hints.
 
 - [Installation](#installation)
 
-    run: pip install git+https://github.com/mrSWE3/DocStringGenerator.git
+    run: `pip install git+https://github.com/mrSWE3/DocStringGenerator.git`
 - [Usage](#usage)
 
-    >Add docstring template to a.py 
+    #### Add docstring template to a.py 
     
-    docstrgen a.py  
+    `docstrgen a.py `
 
-    >Add docstring template to a.py but save in b.py
+    #### Add docstring template to a.py but save in b.py
 
-    docstrgen a.py -o b.py
+    `docstrgen a.py -o b.py`
 
-    >Generate docstrings even if they already exists to a.py
+    #### Generate docstrings even if they already exists to a.py
 
-    docstrgen a.py -f
+    `docstrgen a.py -f`
 
 <p style="display: flex; align-items: flex-start;">
   <img src="images/a.png" width="45%" align="top"/>
