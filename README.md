@@ -1,7 +1,6 @@
 ![Build Status](https://img.shields.io/github/workflow/status/username/repository/CI)
 
-[View a.py](https://github.com/mrSWE3/DocStringGenerator/example/a.py)
-[View b.py](https://github.com/mrSWE3/DocStringGenerator/example/b.py)
+
 
 
 - [Installation](#installation)
@@ -20,4 +19,8 @@
     >Generate docstrings even if they already exists to a.py
 
     docstrgen a.py -f
-    
+
+<p>
+  <img src="images/a.png" width="45%" style="vertical-align: top;"/>
+  <img src="images/b.png" width="45%" style="vertical-align: top;"/>
+</p>
