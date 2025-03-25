@@ -40,7 +40,6 @@ class FillInDocumentor(Documentor, Protocol):
         add_section("## Decorators", lines, self.document_decorators(class_def.decorator_list))
         add_section("## Type Params", lines, self.document_type_params(class_def.type_params))
         add_section("## Key Words", lines, self.document_key_words(class_def.keywords))
-        lines.append("")
         return lines
     def document_function(self, func_def: ast.FunctionDef) -> Iterable[str]:
         lines: List[str] = []
@@ -50,7 +49,6 @@ class FillInDocumentor(Documentor, Protocol):
         add_section("## Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
         add_section("## Yields", lines, self.document_yields(func_def.returns))
         add_section("## Return", lines, self.document_returns(func_def.returns))
-        lines.append("")
         return lines
     def document_async_function(self, func_def: ast.AsyncFunctionDef) -> Iterable[str]:
         lines: List[str] = []
@@ -60,7 +58,6 @@ class FillInDocumentor(Documentor, Protocol):
         add_section("## Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
         add_section("## Yields", lines, self.document_yields(func_def.returns))
         add_section("## Return", lines, self.document_returns(func_def.returns))
-        lines.append("")
         return lines
 
     def document_key_words(self, key_words: List[ast.keyword]) -> List[str]:
