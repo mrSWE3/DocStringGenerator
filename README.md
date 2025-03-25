@@ -16,7 +16,7 @@ A Python docstring template generator with type hints.
 
     `docstrgen a.py -o b.py`
 
-    #### Generate docstrings even if they already exists to a.py
+    #### Add docstring template to a.py and replace existing docstrings
 
     `docstrgen a.py -f`
 
