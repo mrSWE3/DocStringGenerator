@@ -36,28 +36,28 @@ def add_section(header:str, current_lines: List[str], new_lines: List[str]):
 class FillInDocumentor(Documentor, Protocol):
     def document_class(self, class_def: ast.ClassDef) -> Iterable[str]:
         lines: List[str] = []
-        add_section("# Summary", lines, [""])
-        add_section("# Decorators", lines, self.document_decorators(class_def.decorator_list))
-        add_section("# Type Params", lines, self.document_type_params(class_def.type_params))
-        add_section("# Key Words", lines, self.document_key_words(class_def.keywords))
+        add_section("## Summary", lines, [""])
+        add_section("## Decorators", lines, self.document_decorators(class_def.decorator_list))
+        add_section("## Type Params", lines, self.document_type_params(class_def.type_params))
+        add_section("## Key Words", lines, self.document_key_words(class_def.keywords))
         return lines
     def document_function(self, func_def: ast.FunctionDef) -> Iterable[str]:
         lines: List[str] = []
-        add_section("# Summary", lines, [""])
-        add_section("# Type params", lines, self.document_type_params(func_def.type_params))
-        add_section("# Args", lines, self.document_args(func_def.args))
-        add_section("# Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
-        add_section("# Yields", lines, self.document_yields(func_def.returns))
-        add_section("# Return", lines, self.document_returns(func_def.returns))
+        add_section("## Summary", lines, [""])
+        add_section("## Type params", lines, self.document_type_params(func_def.type_params))
+        add_section("## Args", lines, self.document_args(func_def.args))
+        add_section("## Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
+        add_section("## Yields", lines, self.document_yields(func_def.returns))
+        add_section("## Return", lines, self.document_returns(func_def.returns))
         return lines
     def document_async_function(self, func_def: ast.AsyncFunctionDef) -> Iterable[str]:
         lines: List[str] = []
-        add_section("# Summary", lines, [""])
-        add_section("# Type params", lines, self.document_type_params(func_def.type_params))
-        add_section("# Args", lines, self.document_args(func_def.args))
-        add_section("# Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
-        add_section("# Yields", lines, self.document_yields(func_def.returns))
-        add_section("# Return", lines, self.document_returns(func_def.returns))
+        add_section("## Summary", lines, [""])
+        add_section("## Type params", lines, self.document_type_params(func_def.type_params))
+        add_section("## Args", lines, self.document_args(func_def.args))
+        add_section("## Exceptions", lines, self.document_raises(extract_from_function(func_def, ast.Raise)))
+        add_section("## Yields", lines, self.document_yields(func_def.returns))
+        add_section("## Return", lines, self.document_returns(func_def.returns))
         return lines
 
     def document_key_words(self, key_words: List[ast.keyword]) -> List[str]:
