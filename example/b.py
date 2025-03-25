@@ -11,6 +11,12 @@ class CustomDict[K,V](
         V: 
     """
 
+
+
+
+
+
+    
     def __init__(self, data: dict[K, V]) -> None:
         """
         ## Summary
@@ -117,7 +123,6 @@ def complex_function(x: float, y: float) -> Generator[Optional[str], None, Tuple
     return x+y,x*y
 
 class DataProcessor[T,R]:
-
     """
     ## Summary
         
@@ -125,6 +130,11 @@ class DataProcessor[T,R]:
         T: 
         R: 
     """
+
+
+
+
+
 
     def __init__(self, data: Iterable[T]) -> None:
         """
@@ -245,3 +255,4 @@ def multi_type_function[X:int](x: X, y: int) -> int | float | str | X:
         return x
     except Exception as e:
         raise e
+

@@ -47,7 +47,7 @@ def remove_docstring(python_file: str) -> str:
     for s in slices:
         final_lines.extend(python_lines[s[0]:s[1]])
         
-    return "\n".join(final_lines)
+    return "\n".join(final_lines) + "\n"
 def get_docstring(node: ast.AST) -> Optional[ast.Constant]:
     """Checks if the first statement in a class or function is a valid docstring."""
     if not isinstance(node, ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef):
@@ -73,11 +73,19 @@ def has_docstring(node: ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef) -
 def add_docstring(file: str, documentor: Documentor  = GoogleDocumentor()) -> str:
 
     line_operations = ast_doc_string_generator(file, documentor)
-    pre_file = [l+"\n" for l in file.split("\n")]
+    pre_file = [l + "\n" for l in file.split("\n")]
     docstring_len_sum = 0
     for lineno,  doc_string in sorted(line_operations.items()):
+        empty_above = 0
+        tmp = lineno-1-empty_above-1 + docstring_len_sum
+        if  pre_file[tmp].strip() == "":
+            while pre_file[tmp].strip() == "":
+                tmp = lineno-1-empty_above-1 + docstring_len_sum
+                empty_above += 1
+            empty_above -= 1
+
         for ds in [""] + doc_string[::-1]:
-            pre_file.insert(lineno-1+docstring_len_sum, ds + "\n")
+            pre_file.insert(lineno-1+docstring_len_sum-empty_above, ds + "\n")
         docstring_len_sum += len(doc_string) + 1
     return "".join(pre_file)
 

@@ -3,9 +3,15 @@ from collections.abc import Mapping
 
 class CustomDict[K,V](
     Mapping[K,V]):
+
+
+
+
+
     """Bad
     docstring
     """
+    
     def __init__(self, data: dict[K, V]) -> None:
         self._data = data
 
@@ -50,6 +56,10 @@ def complex_function(x: float, y: float) -> Generator[Optional[str], None, Tuple
     return x+y,x*y
 
 class DataProcessor[T,R]:
+
+
+
+
     """Third docstring"""
 
     def __init__(self, data: Iterable[T]) -> None:
