@@ -1,8 +1,8 @@
 from typing import TypeVar, Generator, Callable, Iterable, Union, Optional, Any
 from collections.abc import Mapping
 
-class CustomDict[K,V](Mapping):
-
+class CustomDict[K,V](
+    Mapping):
     def __init__(self, data: dict[K, V]) -> None:
         self._data = data
 

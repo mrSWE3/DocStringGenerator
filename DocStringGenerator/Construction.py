@@ -18,13 +18,14 @@ def ast_doc_string_generator(python_lines: str,
         if isinstance(node, (ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef)) and (over_write_docstrings or not has_docstring(node)):
             if isinstance(node, ast.ClassDef):
                 docstring = insert_doc_string(node.col_offset+1, doc.document_class(node))
-                docstring_lineno.append((node.lineno, docstring))
+                
+                docstring_lineno.append((node.body[0].lineno-1, docstring))
             elif isinstance(node, ast.FunctionDef):
                 docstring = insert_doc_string(node.col_offset+1,doc.document_function(node))
-                docstring_lineno.append((node.lineno, docstring))
+                docstring_lineno.append((node.body[0].lineno-1, docstring))
             elif isinstance(node, ast.AsyncFunctionDef):
                 docstring = insert_doc_string(node.col_offset+1,doc.document_async_function(node))
-                docstring_lineno.append((node.lineno, docstring))
+                docstring_lineno.append((node.body[0].lineno-1, docstring))
 
     return docstring_lineno    
 

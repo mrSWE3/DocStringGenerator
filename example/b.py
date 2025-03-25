@@ -1,7 +1,8 @@
 from typing import TypeVar, Generator, Callable, Iterable, Union, Optional, Any
 from collections.abc import Mapping
 
-class CustomDict[K,V](Mapping):
+class CustomDict[K,V](
+    Mapping):
     """
     ## Summary
         
@@ -9,7 +10,6 @@ class CustomDict[K,V](Mapping):
         K: 
         V: 
     """
-
     def __init__(self, data: dict[K, V]) -> None:
         """
         ## Summary
@@ -117,6 +117,7 @@ def complex_function[T](x: T, y: int | float) -> Generator[Optional[str], None, 
         yield None
 
 class DataProcessor[T,R]:
+
     """
     ## Summary
         
@@ -124,7 +125,6 @@ class DataProcessor[T,R]:
         T: 
         R: 
     """
-
     def __init__(self, data: Iterable[T]) -> None:
         """
         ## Summary
