@@ -21,6 +21,6 @@
     docstrgen a.py -f
 
 <p style="display: flex; align-items: flex-start;">
-  <img src="images/a.png" width="45%" />
+  <img src="images/a.png" width="45%" align="top"/>
   <img src="images/b.png" width="45%" />
 </p>
