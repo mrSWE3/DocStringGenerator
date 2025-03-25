@@ -1,8 +1,11 @@
-from typing import TypeVar, Generator, Callable, Iterable, Union, Optional, Any
+from typing import Generator, Callable, Iterable, Optional, List, Tuple
 from collections.abc import Mapping
 
 class CustomDict[K,V](
-    Mapping):
+    Mapping[K,V]):
+    """Bad
+    docstring
+    """
     def __init__(self, data: dict[K, V]) -> None:
         self._data = data
 
@@ -12,19 +15,20 @@ class CustomDict[K,V](
         except KeyError:
             raise KeyError(f"Key {key} not found")
 
-    def __iter__(self) -> Iterable[K]:
-        yield from self._data
+    
+
+    
 
     def __len__(self) -> int:
         return len(self._data)
 
-def process_data[T,R:T](data: Iterable[T], processor: Callable[[T], R]) -> Generator[R, None, None]:
+def process_data[T,R:List[str]](data: Iterable[T], processor: Callable[[T], R]) -> Generator[R, None, None]:
+    """Another docstring"""
     for item in data:
         try:
             yield processor(item)
         except Exception as e:
             print(f"Error processing item {item}: {e}")
-            yield None
 
 def get_value[K,V](mapping: Mapping[K, V], key: K) -> V | None | KeyError:
     if key in mapping:
@@ -32,7 +36,7 @@ def get_value[K,V](mapping: Mapping[K, V], key: K) -> V | None | KeyError:
     else:
         raise KeyError(f"Key '{key}' not found in mapping.")
 
-def complex_function[T](x: T, y: int | float) -> Generator[Optional[str], None, None]:
+def complex_function(x: float, y: float) -> Generator[Optional[str], None, Tuple[float, float]]:
     try:
         if isinstance(x, int):
             yield str(x * y)
@@ -43,10 +47,13 @@ def complex_function[T](x: T, y: int | float) -> Generator[Optional[str], None, 
     except TypeError as e:
         print(f"Error: {e}")
         yield None
+    return x+y,x*y
 
 class DataProcessor[T,R]:
+    """Third docstring"""
 
     def __init__(self, data: Iterable[T]) -> None:
+        """Last docstring"""
         self.data = data
 
     def __iter__(self) -> Generator[T, None, None]:
@@ -71,15 +78,9 @@ def example_generator() -> Generator[int, None, None]:
         print(f"Exception caught: {e}")
         yield -1
 
-def another_example_function[X,Y](x: X, y: Y) -> Generator[str, None, None]:
-    if x < y:
-        yield f"{x} is smaller than {y}"
-    elif x > y:
-        yield f"{x} is greater than {y}"
-    else:
-        yield f"{x} equals {y}"
 
-def process_collection[T](data: Iterable[CustomDict]) -> Generator[str, None, None]:
+
+def process_collection[K,V](data: Iterable[CustomDict[K,V]]) -> Generator[str, None, None]:
     try:
         for item in data:
             if isinstance(item, int) and item < 0:
@@ -89,15 +90,12 @@ def process_collection[T](data: Iterable[CustomDict]) -> Generator[str, None, No
         print(f"Caught exception: {e}")
         yield f"Error processing item: {e}"
 
-def multi_type_function[X,Y](x: X, y: Y) -> int | float | str | None:
+def multi_type_function[X:int](x: X, y: int) -> int | float | str | X:
     try:
-        if isinstance(x, int) and isinstance(y, int):
-            return x + y
-        elif isinstance(x, float) and isinstance(y, float):
+        if isinstance(x, float) and isinstance(y, float):
             return x * y
         elif isinstance(x, str) and isinstance(y, str):
             return x + y
-        return None
+        return x
     except Exception as e:
-        print(f"Exception occurred: {e}")
-        return None
+        raise e

@@ -1,7 +1,5 @@
-import sys
-import os
 import argparse
-from DocStringGenerator.Construction import add_docstring
+from DocStringGenerator.Construction import add_docstring,remove_docstring
 
 def main():
     # Set up the argument parser
@@ -26,6 +24,7 @@ def main():
         action='store_true', 
         help="Add new docstring even if one already exists"
     )
+
     
     # Parse the arguments
     args = parser.parse_args()
@@ -37,7 +36,10 @@ def main():
     # Open input and output files
     with open(in_py) as f:
         # Call add_docstring and write the result to the output file
-        lines = add_docstring(f.readlines(), force=bool(args.force))
+        file_text = f.read()
+        if bool(args.force):
+            file_text = remove_docstring(file_text)
+        lines = add_docstring(file_text)
     with open(out_py, "w") as f:
         f.writelines(lines)
 if __name__ == "__main__":
