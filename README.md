@@ -1,7 +1,7 @@
 ![Build Status](https://img.shields.io/github/workflow/status/username/repository/CI)
 
-[View a.py](https://github.com/mrSWE3/DocStringGenerator/example/a.py)
-[View b.py](https://github.com/mrSWE3/DocStringGenerator/example/b.py)
+[View a.py](https://github.com/mrSWE3/DocStringGenerator/blob/main/example/a.py)
+[View b.py](https://github.com/mrSWE3/DocStringGenerator/blob/main/example/b.py)
 
 
 - [Installation](#installation)
