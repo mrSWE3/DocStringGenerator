@@ -20,7 +20,7 @@
 
     docstrgen a.py -f
 
-<p>
-  <img src="images/a.png" width="45%" style="vertical-align: top;"/>
-  <img src="images/b.png" width="45%" style="vertical-align: top;"/>
+<p style="display: flex; align-items: flex-start;">
+  <img src="images/a.png" width="45%" />
+  <img src="images/b.png" width="45%" />
 </p>
