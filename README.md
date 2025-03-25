@@ -1,6 +1,7 @@
-![Build Status](https://img.shields.io/github/workflow/status/username/repository/CI)
+# DocStringGenerator
+A Python docstring template generator with type hints.
 
-
+*Tested for 3.12 but will work for older versions in most cases*
 
 
 - [Installation](#installation)
