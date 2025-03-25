@@ -5,7 +5,6 @@ A Python docstring template generator with type hints.
 
 
 - [Installation](#installation)
-
     run: `pip install git+https://github.com/mrSWE3/DocStringGenerator.git`
 - [Usage](#usage)
 

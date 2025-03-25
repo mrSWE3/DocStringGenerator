@@ -35,9 +35,10 @@ def main():
     out_py = args.output if args.output else in_py  # Use in_py as default for out_py
     
     # Open input and output files
-    with open(in_py) as f, open(out_py, "w") as f2:
+    with open(in_py) as f:
         # Call add_docstring and write the result to the output file
-        f2.writelines(add_docstring(f.readlines(), force=bool(args.force)))
-
+        lines = add_docstring(f.readlines(), force=bool(args.force))
+    with open(out_py, "w") as f:
+        f.writelines(lines)
 if __name__ == "__main__":
     main()
