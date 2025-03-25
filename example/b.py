@@ -10,6 +10,7 @@ class CustomDict[K,V](
         K: 
         V: 
     """
+
     def __init__(self, data: dict[K, V]) -> None:
         """
         ## Summary
@@ -17,6 +18,7 @@ class CustomDict[K,V](
         ## Args
             data (dict[K, V]): 
         """
+
         self._data = data
 
     def __getitem__(self, key: K) -> V:
@@ -28,6 +30,7 @@ class CustomDict[K,V](
         ## Return
             V
         """
+
         try:
             return self._data[key]
         except KeyError:
@@ -44,6 +47,7 @@ class CustomDict[K,V](
         ## Return
             int
         """
+
         return len(self._data)
 
 def process_data[T,R:List[str]](data: Iterable[T], processor: Callable[[T], R]) -> Generator[R, None, None]:
@@ -61,6 +65,7 @@ def process_data[T,R:List[str]](data: Iterable[T], processor: Callable[[T], R]) 
     ## Return
         Generator[R, None, None]
     """
+
     for item in data:
         try:
             yield processor(item)
@@ -80,6 +85,7 @@ def get_value[K,V](mapping: Mapping[K, V], key: K) -> V | None | KeyError:
     ## Return
         V | None | KeyError
     """
+
     if key in mapping:
         return mapping[key]
     else:
@@ -97,6 +103,7 @@ def complex_function(x: float, y: float) -> Generator[Optional[str], None, Tuple
     ## Return
         Generator[Optional[str], None, Tuple[float, float]]
     """
+
     try:
         if isinstance(x, int):
             yield str(x * y)
@@ -118,6 +125,7 @@ class DataProcessor[T,R]:
         T: 
         R: 
     """
+
     def __init__(self, data: Iterable[T]) -> None:
         """
         ## Summary
@@ -125,6 +133,7 @@ class DataProcessor[T,R]:
         ## Args
             data (Iterable[T]): 
         """
+
         self.data = data
 
     def __iter__(self) -> Generator[T, None, None]:
@@ -136,6 +145,7 @@ class DataProcessor[T,R]:
         ## Return
             Generator[T, None, None]
         """
+
         yield from self.data
 
     def filter_data(self, condition: Callable[[T], bool]) -> Generator[T, None, None]:
@@ -149,6 +159,7 @@ class DataProcessor[T,R]:
         ## Return
             Generator[T, None, None]
         """
+
         for item in self.data:
             if condition(item):
                 yield item
@@ -164,6 +175,7 @@ class DataProcessor[T,R]:
         ## Return
             Generator[R, None, None]
         """
+
         for item in self.data:
             yield function(item)
 
@@ -176,6 +188,7 @@ def example_generator() -> Generator[int, None, None]:
     ## Return
         Generator[int, None, None]
     """
+
     try:
         for i in range(5):
             if i == 3:
@@ -201,6 +214,7 @@ def process_collection[K,V](data: Iterable[CustomDict[K,V]]) -> Generator[str, N
     ## Return
         Generator[str, None, None]
     """
+
     try:
         for item in data:
             if isinstance(item, int) and item < 0:
@@ -222,6 +236,7 @@ def multi_type_function[X:int](x: X, y: int) -> int | float | str | X:
     ## Return
         int | float | str | X
     """
+
     try:
         if isinstance(x, float) and isinstance(y, float):
             return x * y

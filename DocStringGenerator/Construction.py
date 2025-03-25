@@ -76,9 +76,9 @@ def add_docstring(file: str, documentor: Documentor  = GoogleDocumentor()) -> st
     pre_file = [l+"\n" for l in file.split("\n")]
     docstring_len_sum = 0
     for lineno,  doc_string in sorted(line_operations.items()):
-        for ds in doc_string[::-1]:
+        for ds in [""] + doc_string[::-1]:
             pre_file.insert(lineno-1+docstring_len_sum, ds + "\n")
-        docstring_len_sum += len(doc_string)
+        docstring_len_sum += len(doc_string) + 1
     return "".join(pre_file)
 
 
