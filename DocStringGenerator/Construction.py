@@ -37,12 +37,13 @@ def remove_docstring(python_file: str) -> str:
         docstring = get_docstring(node)
         if  docstring != None:
             docstring_lineno.append(docstring.lineno-1)
-            docstring_lineno.append(docstring.end_lineno if docstring.end_lineno else docstring.lineno)
+            docstring_lineno.append((docstring.end_lineno if docstring.end_lineno else docstring.lineno))
     docstring_lineno.append(tree.body[-1].end_lineno if tree.body[-1].end_lineno else tree.body[-1].lineno)
-    
+    docstring_lineno = sorted(docstring_lineno)
     slices =  zip(docstring_lineno[:-1][::2],docstring_lineno[1:][::2])
     final_lines:List[str] = []
     python_lines = python_file.split("\n")
+  
     for s in slices:
         final_lines.extend(python_lines[s[0]:s[1]])
         

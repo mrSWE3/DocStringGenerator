@@ -4,4 +4,4 @@ if __name__ == "__main__":
     with open("example/a.py") as f:
         lines = add_docstring(remove_docstring(f.read()))
     with open("example/b.py", "w") as f:
-        f.writelines(lines.split("\n"))
+        f.write(lines)

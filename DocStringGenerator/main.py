@@ -41,6 +41,6 @@ def main():
             file_text = remove_docstring(file_text)
         lines = add_docstring(file_text)
     with open(out_py, "w") as f:
-        f.writelines(lines)
+        f.write(lines)
 if __name__ == "__main__":
     main()
